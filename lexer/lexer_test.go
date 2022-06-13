@@ -39,5 +39,10 @@ func TestGetTokens(t *testing.T) {
         if tokens[i].Type != testTok.expectedType {
             t.Fatalf("tests[%d] failed. Wrong token type got: %s expected: %s", i, tokens[i].Type, testTok.expectedType)
         }
+
+        if tokens[i].Value != testTok.expectedValue {
+            t.Fatalf("tests[%d] failed. Wrong token value got: %s expected: %s", i, tokens[i].Value, testTok.expectedValue)
+        }
     }
+
 }

@@ -6,25 +6,32 @@ import (
 )
 
 func TestGetTokens(t *testing.T) {
-    input := `()+*-/`
+    input := `(254*13) / ( 14 + 1 - 3)`
 
     tests := []struct {
         expectedType    string
         expectedValue   string
     }{
         {token.LPAREN, "("},
-        {token.RPAREN, ")"},
-        {token.PLUS, "+"},
+        {token.NUM, "254"},
         {token.ASTERISK, "*"},
-        {token.MINUS, "-"},
+        {token.NUM, "13"},
+        {token.RPAREN, ")"},
         {token.SLASH, "/"},
+        {token.LPAREN, "("},
+        {token.NUM, "14"},
+        {token.PLUS, "+"},
+        {token.NUM, "1"},
+        {token.MINUS, "-"},
+        {token.NUM, "3"},
+        {token.RPAREN, ")"},
         {token.EOF, token.EOF},
     }
 
     l := Lexer{input: input}
     tokens := l.GetTokens()
 
-    if len(tokens) != 7 {
+    if len(tokens) != len(tests) {
         t.Fatalf("Mismatched length between tests and lexer tokens got: %d expected: %d", len(tokens), 7)
     }
 

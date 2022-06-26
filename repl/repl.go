@@ -1,10 +1,12 @@
 package repl
 
 import (
+    "fmt"
     "io"
     "bufio"
+
     "github.com/jmptc/carner-calc/lexer"
-    "fmt"
+    "github.com/jmptc/carner-calc/parser"
 )
 
 func Repl(in io.Reader, out io.Writer) {
@@ -13,7 +15,8 @@ func Repl(in io.Reader, out io.Writer) {
     for scanner.Scan() {
         l := lexer.NewLexer(scanner.Text())
         tokens := l.GetTokens()
-
-        fmt.Fprintf(out, "%s\n", tokens)
+        
+        p := parser.New(tokens)
+        fmt.Fprintf(out, "%s\n", p.Parse())
     }
 }

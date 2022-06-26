@@ -20,6 +20,7 @@ var precedenceMap = map[string]int{
 	token.MINUS:    SUM,
 	token.ASTERISK: PRODUCT,
 	token.SLASH:    PRODUCT,
+    token.LPAREN:   GROUP,
 }
 
 type prefixParseFunc func() ast.Expression
@@ -42,6 +43,7 @@ func New(tokens []token.Token) *Parser {
 
 	p.prefixParseFuncs = make(map[string]prefixParseFunc)
 	p.prefixParseFuncs[token.NUM] = p.parseNumLiteral
+    p.prefixParseFuncs[token.LPAREN] = p.parseGroup
 
 	p.infixParseFuncs = make(map[string]infixParseFunc)
 	p.infixParseFuncs[token.PLUS] = p.parseInfixExpression
@@ -106,6 +108,20 @@ func (p *Parser) parseNumLiteral() ast.Expression {
 	num.Value = val
 
 	return num
+}
+
+func (p *Parser) parseGroup() ast.Expression {
+    p.Advance()
+
+    exp := p.parseExpression(LOWEST)
+
+    if !p.peekTokenIs(token.RPAREN) {
+        return nil
+    }
+
+    p.Advance()
+
+    return exp
 }
 
 func (p *Parser) Advance() bool {

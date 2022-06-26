@@ -24,6 +24,10 @@ func TestExpressionParsing(t *testing.T) {
 			"2 / 3 * 4",
 			"((2 / 3) * 4)",
 		},
+        {
+            "(1 + 2) * 3",
+            "((1 + 2) * 3)",
+        },
 	}
 
 	for _, tt := range tests {
